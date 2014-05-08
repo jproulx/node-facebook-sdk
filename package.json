@@ -1,0 +1,26 @@
+{
+  "name": "facebook-sdk",
+  "version": "1.0.0",
+  "description": "Facebook SDK",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "facebook"
+  ],
+  "author": "Jesse Proulx <github@jproulx.net>",
+  "license": "ISC",
+  "dependencies": {
+    "custom-error-generator": "^5.0.0"
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jproulx/node-facebook-sdk.git"
+  },
+  "bugs": {
+    "url": "https://github.com/jproulx/node-facebook-sdk/issues"
+  },
+  "homepage": "https://github.com/jproulx/node-facebook-sdk"
+}
