@@ -17,6 +17,8 @@ var codes = {
 };
 var FacebookSDKError = createError('FacebookSDKError');
 var FacebookSDK = function (config) {
+    assert.ok(config.appID, 'The Facebook SDK requires an application ID');
+    assert.ok(config.secret, 'The Facebook SDK requires an application secret token');
     this.appID  = config.appID;
     this.secret = config.secret;
     this.cache  = { };
@@ -36,6 +38,7 @@ FacebookSDK.prototype.createAppSecretProof = function (access_token) {
 FacebookSDK.prototype.isolate = function FBSDKIsolate (execute, callback) {
     var d = domain.create();
     return d.on('error', function (error) {
+        console.error(error.stack || error.message || error);
         if (callback && typeof callback === 'function') {
             return callback.call(this, error, null);
         }
@@ -106,7 +109,7 @@ FacebookSDK.prototype.getApplicationAccessToken = function FBSDKGetApplicationAc
     return this.isolate(function (d) {
         // If we already have the token cached, just use it
         if (this.cache.applicationAccessToken) {
-            return callback.call(this, null, this.cacheApplicationAccessToken);
+            return callback.call(this, null, this.cache.applicationAccessToken);
         }
         var options = {
             'method' : 'GET',
