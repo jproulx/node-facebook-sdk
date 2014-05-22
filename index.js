@@ -180,4 +180,33 @@ FacebookSDK.prototype.deleteAllApplicationScores = function FBSDKDeleteAllApplic
         return this.sendApplicationAPIRequest(options, d.bind(callback));
     }, callback);
 };
+/**
+ * Follows the recommended settings for establishing a channelURL for the JS SDK
+ *
+ * @note    https://developers.facebook.com/blog/post/2011/08/02/how-to--optimize-social-plugin-performance/
+ *
+ * @public
+ * @static
+ * @param   {Object}    request
+ * @param   {Object}    response
+ */
+FacebookSDK.channelMiddleware = function FBSDKChannelMiddleware (request, response) {
+    var crypto  = require('crypto');
+    var expires = 60 * 60 * 24 * 365;
+    var body    = '<script src="//connect.facebook.net/en_US/all.js"></script>';
+    var date    = new Date(Date.now() + (expires * 1000)).toUTCString();
+    var md5     = crypto
+        .createHash('md5')
+        .update(body, 'utf8')
+        .digest('hex');
+    // Set all response headers
+    response.set({
+        'Pragma'        : 'public',
+        'Cache-Control' : 'public, maxage=' + expires,
+        'Expires'       : date,
+        'Etag'          : md5
+    });
+    return response.send(body);
+};
+
 module.exports = FacebookSDK;
